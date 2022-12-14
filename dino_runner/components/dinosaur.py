@@ -9,6 +9,7 @@ DUCKING_ACTION = "ducking"
 class Dinosaur(Sprite):
     Y_POS = 310
     X_POS = 80
+    Y_POS_DUCK = 340
     JUMP_VELOCITY = 8.5
     def __init__(self):
         self.image = RUNNING[0]
@@ -44,6 +45,9 @@ class Dinosaur(Sprite):
 
     def run (self):
         self.image = RUNNING[0] if self.step < 5 else RUNNING[1]
+        self.rect = self.image.get_rect()
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS
         self.step += 1
     
     def jump (self):
@@ -58,8 +62,8 @@ class Dinosaur(Sprite):
     def duck(self):
         self.image = DUCKING[0] if self.step < 5 else DUCKING[1]
         self.rect = self.image.get_rect()
-        self.rect.x = 80
-        self.rect.y = 332
+        self.rect.x = self.X_POS
+        self.rect.y = 340
         self.step += 1
 
     def draw(self, screen):
