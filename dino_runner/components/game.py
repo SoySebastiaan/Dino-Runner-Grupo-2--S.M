@@ -5,7 +5,7 @@ from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.components.score import Score
 
 
-from dino_runner.utils.constants import (BG, DINO_START, FONT_STYLE, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS)
+from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, FONT_STYLE, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS)
 
 
 class Game:
@@ -39,7 +39,8 @@ class Game:
     def run(self):
         # Game loop: events - update - draw
         self.playing = True
-        self.obstacle_manager.reset_obstacles()       
+        self.obstacle_manager.reset_obstacles()      
+        self.score.reset_score(self) 
         while self.playing:
             self.events()
             self.update()
@@ -90,10 +91,9 @@ class Game:
             message_rect = message.get_rect()
             message_rect.center = (half_screen_width, half_screen_height)
             self.screen.blit(message, message_rect)
+            self.screen.blit(DINO_START, (half_screen_width -40, half_screen_height -120))
         else:
-            print(self.death_count)
-        #Icono
-        self.screen.blit(DINO_START, (half_screen_width -40, half_screen_height -120))
+            self.restar_game()
         #Update
         pygame.display.update()
         #Escuchar
@@ -105,3 +105,19 @@ class Game:
                 self.executing = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
+
+    def restar_game(self):
+        self.screen.fill((0, 204, 204))
+        half_screen_width = SCREEN_WIDTH // 2
+        half_screen_height = SCREEN_HEIGHT // 2
+
+        if self.death_count > 0:
+            font = pygame.font.Font(FONT_STYLE, 30)
+            message = font.render("Press any key to restar." f"Death count: {self.death_count} ", True, (0, 0, 0))
+            message_rect = message.get_rect()
+            message_rect.center = (half_screen_width, half_screen_height)
+            self.screen.blit(message, message_rect)
+            self.screen.blit(DINO_DEAD, (half_screen_width -50, half_screen_height -120))
+            pygame.display.update()
+
+            
