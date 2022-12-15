@@ -23,9 +23,6 @@ class ObstacleManager:
             else:
                 self.obstacles.append(Bird(BIRD))
 
-
-            
-
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
             if obstacle.rect.colliderect(game.player.rect):

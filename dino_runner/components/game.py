@@ -1,11 +1,12 @@
 import pygame
 from dino_runner.components.dinosaur import Dinosaur
+from dino_runner.components.messages import make_message
 from dino_runner.components.obstacle_manager import ObstacleManager
 from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.components.score import Score
 
 
-from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, FONT_STYLE, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS)
+from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS)
 
 
 class Game:
@@ -86,11 +87,7 @@ class Game:
         half_screen_height = SCREEN_HEIGHT // 2
 
         if self.death_count == 0:
-            font = pygame.font.Font(FONT_STYLE, 30)
-            message = font.render("Press any key to start.", True, (0, 0, 0))
-            message_rect = message.get_rect()
-            message_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(message, message_rect)
+            make_message("Press any key to play...", self.screen)
             self.screen.blit(DINO_START, (half_screen_width -40, half_screen_height -120))
         else:
             self.restar_game()
@@ -112,11 +109,11 @@ class Game:
         half_screen_height = SCREEN_HEIGHT // 2
 
         if self.death_count > 0:
-            font = pygame.font.Font(FONT_STYLE, 30)
-            message = font.render("Press any key to restar." f"Death count: {self.death_count} ", True, (0, 0, 0))
-            message_rect = message.get_rect()
-            message_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(message, message_rect)
+            make_message("You lose...", self.screen)
+            make_message("Press any key to restar...", self.screen, rect_y=half_screen_height + 50)
+            make_message(f"Your Score: {self.score.points}", self.screen, rect_y=half_screen_height+100)
+            make_message(f"Best Score: {self.score.high_score}", self.screen, rect_y=half_screen_height+150)
+            make_message(f"Deaths: {self.death_count}", self.screen, rect_y=half_screen_height+200)
             self.screen.blit(DINO_DEAD, (half_screen_width -50, half_screen_height -120))
             pygame.display.update()
 
