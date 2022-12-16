@@ -1,13 +1,13 @@
 import pygame
+from dino_runner.components.clouds import Clouds
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.messages import make_message
 from dino_runner.components.obstacle_manager import ObstacleManager
-from dino_runner.components.obstacles.cactus import Cactus
-from dino_runner.components.power_ups.powe_up_manager import PowerUpManager
+from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 from dino_runner.components.score import Score
 
 
-from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, GAME_OVER, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, TITLE, FPS)
+from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, GAME_OVER, HAMMER_TYPE, HEART_TYPE, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, TITLE, FPS)
 
 
 class Game:
@@ -23,6 +23,7 @@ class Game:
         self.y_pos_bg = 380
 
         self.player = Dinosaur()
+        self.clouds = Clouds()
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
         self.score = Score()
@@ -58,7 +59,8 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
+        self.player.update(user_input, self.heart_fly)
+        self.clouds.update(self)
         self.obstacle_manager.update(self.game_speed, self.player, self.on_death)
         self.power_up_manager.update(self.game_speed, self.score.points, self.player)
         self.score.update(self)
@@ -68,6 +70,7 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
+        self.clouds.draw(self.screen)
         self.player.draw(self.screen)
         self.player.draw_active_power_up(self.screen)
         self.obstacle_manager.draw(self.screen)
@@ -133,3 +136,11 @@ class Game:
             self.playing = False
 
         return not has_shield
+
+    def heart_fly(self):
+        has_heart = self.player.type == HEART_TYPE
+        return has_heart
+
+
+
+

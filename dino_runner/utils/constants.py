@@ -26,9 +26,23 @@ RUNNING_HAMMER = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
 ]
 
+RUNNING_RIDE = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoHorse.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoHorse2.png")),
+]
+
+RUNNING_HEART = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoFly.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoFly2.png")),
+]
+
+
 JUMPING = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJump.png"))
 JUMPING_SHIELD = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJumpShield.png"))
 JUMPING_HAMMER = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJumpHammer.png"))
+JUMPING_RIDE = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoHorseJump.png"))
+JUMPING_HEART = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoFly2.png"))
+
 
 DUCKING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1.png")),
@@ -43,6 +57,16 @@ DUCKING_SHIELD = [
 DUCKING_HAMMER = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1Hammer.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck2.png")),
+]
+
+DUCKING_RIDE = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoHorse.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoHorse2.png")),
+]
+
+DUCKING_HEART = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoFly.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoFly2.png")),
 ]
 
 SMALL_CACTUS = [
@@ -78,4 +102,9 @@ GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, "Other/GameOver.png"))
 DEFAULT_TYPE = "default"
 
 FONT_STYLE = 'freesansbold.ttf'
+
 SHIELD_TYPE = "shield"
+
+HAMMER_TYPE = "hammer"
+
+HEART_TYPE = "heart"
