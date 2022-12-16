@@ -1,17 +1,12 @@
 import pygame
 from dino_runner.utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH
 
-
-FONT_SIZE = 30
-FONT_COLOR = (0,0,0)
-FONT_STYLE = 'freesansbold.ttf'
-
 def make_message (
     tetx, 
     screen, 
-    font_size= FONT_SIZE, 
-    font_color= FONT_COLOR, 
-    font_style=FONT_STYLE,
+    font_size= 30, 
+    font_color= (0,0,0), 
+    font_style='freesansbold.ttf',
     rect_x = SCREEN_WIDTH // 2,
     rect_y = SCREEN_HEIGHT // 2
 ):

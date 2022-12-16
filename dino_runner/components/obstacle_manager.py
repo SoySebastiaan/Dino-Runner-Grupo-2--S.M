@@ -13,7 +13,7 @@ class ObstacleManager:
     def __init__(self):
         self.obstacles = []
 
-    def update(self, game):
+    def update(self, game_speed, player, on_death):
         self.type_obstacle = random.randint(0,2)
         if len(self.obstacles) == 0:
             if self.type_obstacle == 1:
@@ -24,11 +24,10 @@ class ObstacleManager:
                 self.obstacles.append(Bird(BIRD))
 
         for obstacle in self.obstacles:
-            obstacle.update(game.game_speed, self.obstacles)
-            if obstacle.rect.colliderect(game.player.rect):
-                pygame.time.delay(500)
-                game.playing = False
-                game.death_count +=1
+            obstacle.update(game_speed, self.obstacles)
+            if obstacle.rect.colliderect(player.rect) and on_death():
+                pygame.time.delay(1000)
+                
                 
 
     def draw(self, screen):

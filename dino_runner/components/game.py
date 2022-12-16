@@ -3,10 +3,11 @@ from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.messages import make_message
 from dino_runner.components.obstacle_manager import ObstacleManager
 from dino_runner.components.obstacles.cactus import Cactus
+from dino_runner.components.power_ups.powe_up_manager import PowerUpManager
 from dino_runner.components.score import Score
 
 
-from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS)
+from dino_runner.utils.constants import (BG, DINO_DEAD, DINO_START, GAME_OVER, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, TITLE, FPS)
 
 
 class Game:
@@ -23,6 +24,7 @@ class Game:
 
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
+        self.power_up_manager = PowerUpManager()
         self.score = Score()
         self.death_count = 0
         self.executing = False
@@ -57,15 +59,19 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
-        self.obstacle_manager.update(self)
+        self.obstacle_manager.update(self.game_speed, self.player, self.on_death)
+        self.power_up_manager.update(self.game_speed, self.score.points, self.player)
         self.score.update(self)
+        
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
+        self.player.draw_active_power_up(self.screen)
         self.obstacle_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
         self.score.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
@@ -82,7 +88,7 @@ class Game:
 
     def show_menu(self):
         #Mensaje en la pantalla
-        self.screen.fill((0, 204, 204))
+        self.screen.fill((245,245,220))
         half_screen_width = SCREEN_WIDTH // 2
         half_screen_height = SCREEN_HEIGHT // 2
 
@@ -104,17 +110,26 @@ class Game:
                 self.run()
 
     def restar_game(self):
-        self.screen.fill((0, 204, 204))
+        self.screen.fill((0,255,255))
         half_screen_width = SCREEN_WIDTH // 2
         half_screen_height = SCREEN_HEIGHT // 2
 
         if self.death_count > 0:
-            make_message("You lose...", self.screen)
+            make_message("YOU LOSE...", self.screen)
             make_message("Press any key to restar...", self.screen, rect_y=half_screen_height + 50)
             make_message(f"Your Score: {self.score.points}", self.screen, rect_y=half_screen_height+100)
             make_message(f"Best Score: {self.score.high_score}", self.screen, rect_y=half_screen_height+150)
             make_message(f"Deaths: {self.death_count}", self.screen, rect_y=half_screen_height+200)
-            self.screen.blit(DINO_DEAD, (half_screen_width -50, half_screen_height -120))
+            self.screen.blit(DINO_DEAD, (half_screen_width -50, half_screen_height -150))
+            self.screen.blit(GAME_OVER, (half_screen_width -200, half_screen_height -210))
             pygame.display.update()
 
-            
+    def on_death(self):
+        has_shield = self.player.type == SHIELD_TYPE
+        if not has_shield:
+            self.player.on_dino_death()
+            self.draw()
+            self.death_count += 1
+            self.playing = False
+
+        return not has_shield
